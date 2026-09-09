@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreEgresoRequest;
+use App\Http\Requests\UpdateEgresoRequest;
 use App\Models\Egreso;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,17 +30,10 @@ class EgresoController extends Controller
         );
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreEgresoRequest $request): JsonResponse
     {
         $egreso = Egreso::query()->create([
-            ...$request->only([
-                'categoria_id',
-                'subcategoria_id',
-                'fecha',
-                'descripcion',
-                'monto',
-                'notas',
-            ]),
+            ...$request->validated(),
             'user_id' => $request->user()->id,
         ]);
 
@@ -59,20 +54,13 @@ class EgresoController extends Controller
         );
     }
 
-    public function update(Request $request, Egreso $egreso): JsonResponse
+    public function update(UpdateEgresoRequest $request, Egreso $egreso): JsonResponse
     {
         if ($egreso->user_id !== $request->user()->id) {
             abort(404);
         }
 
-        $egreso->update($request->only([
-            'categoria_id',
-            'subcategoria_id',
-            'fecha',
-            'descripcion',
-            'monto',
-            'notas',
-        ]));
+        $egreso->update($request->validated());
 
         return response()->json(
             $egreso->load(['categoria', 'subcategoria'])
