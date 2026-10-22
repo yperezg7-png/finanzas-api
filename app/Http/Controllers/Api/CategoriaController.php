@@ -3,23 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FiltroCategoriasRequest;
 use App\Http\Requests\StoreCategoriaRequest;
 use App\Http\Requests\UpdateCategoriaRequest;
 use App\Models\Categoria;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class CategoriaController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(FiltroCategoriasRequest $request): JsonResponse
     {
-        $request->validate([
-            'tipo' => ['sometimes', Rule::in(['ingreso', 'egreso'])],
-        ], [
-            'tipo.in' => 'El tipo de categoría debe ser ingreso o egreso.',
-        ]);
-
         $query = Categoria::query()
             ->with('subcategorias')
             ->where(function ($query) use ($request) {

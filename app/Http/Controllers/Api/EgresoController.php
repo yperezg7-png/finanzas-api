@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FiltrosMovimientosRequest;
 use App\Http\Requests\StoreEgresoRequest;
 use App\Http\Requests\UpdateEgresoRequest;
 use App\Models\Egreso;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 class EgresoController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(FiltrosMovimientosRequest $request): JsonResponse
     {
         $query = Egreso::query()
             ->with(['categoria', 'subcategoria'])

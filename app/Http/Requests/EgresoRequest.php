@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 abstract class EgresoRequest extends FormRequest
@@ -45,9 +45,9 @@ abstract class EgresoRequest extends FormRequest
                 'nullable',
                 'integer',
                 Rule::exists('subcategorias', 'id')
-                    ->where('categoria_id', $this->input('categoria_id')),
+                    ->where('categoria_id', is_scalar($this->input('categoria_id')) ? $this->input('categoria_id') : 0),
             ],
-            'monto' => [...$presencia, 'numeric', 'gt:0', 'decimal:0,2'],
+            'monto' => [...$presencia, 'numeric', 'gt:0', 'decimal:0,2', 'max:9999999999.99'],
             'notas' => ['nullable', 'string'],
         ];
     }
@@ -69,6 +69,7 @@ abstract class EgresoRequest extends FormRequest
             'subcategoria_id.integer' => 'La subcategoría seleccionada no es válida.',
             'subcategoria_id.exists' => 'La subcategoría seleccionada no existe o no pertenece a la categoría enviada.',
             'monto.required' => 'El monto es obligatorio.',
+            'monto.max' => 'El monto no puede superar 9,999,999,999.99.',
             'monto.numeric' => 'El monto debe ser numérico.',
             'monto.gt' => 'El monto debe ser mayor que cero.',
             'monto.decimal' => 'El monto debe tener como máximo 2 decimales.',

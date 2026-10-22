@@ -35,7 +35,7 @@ class IngresoFactory extends Factory
                 'Venta ocasional',
                 'Bono recibido',
             ]),
-            'monto' => fake()->randomFloat(2, 800, 3500),
+            'monto' => bcdiv((string) fake()->numberBetween(80000, 350000), '100', 2),
             'notas' => null,
         ];
     }

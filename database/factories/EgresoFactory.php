@@ -43,7 +43,7 @@ class EgresoFactory extends Factory
                 'Transporte',
                 'Consumo personal',
             ]),
-            'monto' => fake()->randomFloat(2, 10, 900),
+            'monto' => bcdiv((string) fake()->numberBetween(1000, 90000), '100', 2),
             'notas' => null,
         ];
     }

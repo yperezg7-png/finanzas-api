@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FiltrosMovimientosRequest;
 use App\Http\Requests\StoreIngresoRequest;
 use App\Http\Requests\UpdateIngresoRequest;
 use App\Models\Ingreso;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 class IngresoController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(FiltrosMovimientosRequest $request): JsonResponse
     {
         $query = Ingreso::query()
             ->with('categoria')
