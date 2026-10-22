@@ -91,3 +91,11 @@ composer validate --no-check-publish
 Para probar en MySQL, usa una base dedicada de pruebas y comprueba también los recorridos del frontend. Las pruebas SQLite no sustituyen todas las diferencias de comportamiento de MySQL.
 
 El seeder opcional `DatosPruebaFinanzasSeeder` genera datos de demostración con junio vacío. **No lo ejecutes sobre usuarios con información que quieras conservar:** reemplaza los movimientos de sus usuarios de demostración. El seeder `CategoriaSeeder` se puede repetir sin duplicar su catálogo.
+
+## Comprobación adicional en MySQL
+
+```powershell
+php tests/verify_mysql.php
+```
+
+Este script verifica precisión decimal, acumulados y mes vacío con datos sintéticos. Después prueba creación, edición, consulta y eliminación autenticadas de ingresos y egresos dentro de una transacción MySQL que siempre revierte. No modifica los movimientos de usuarios existentes ni conserva los usuarios o tokens temporales. MySQL puede avanzar sus contadores de identificadores incluso al revertir la transacción.
